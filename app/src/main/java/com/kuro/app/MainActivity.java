@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     TextView apkcrc;
     TextView apkinstaller1, apkinstaller2;
 
+    @Deprecated
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
