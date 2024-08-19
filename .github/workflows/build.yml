@@ -29,15 +29,17 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew assemble
+          ./gradlew assembleDebug
           {
             echo "version=v$(grep versionName ./app/build.gradle | awk '{print $2}' | tr -d \")"
             echo "repo=$(echo ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/})"
             echo "commit=$(echo ${{ github.sha }} | cut -c-7)"
           } >> $GITHUB_ENV
 
-      - name: Upload APK
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.repo }}(${{ env.version }}@${{ env.commit }})
-          path: app/build/outputs/apk/**/app-*.apk
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/intermediates/cxx/Debug/*/obj/*/libkiller.so
