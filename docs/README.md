@@ -1,4 +1,6 @@
-# What is it?
+# APKKiller
+
+## What is it?
 APKKiller is a method to bypass various android application security system check such as Signature Verification, Integrity Check, etc. APKKiller uses JNI & Reflection to bypass _Hidden API Restriction_, however there is no guarantee that APKKiller will bypass all android application security. APKKiller is made for educational purpose only, use with discretion.
 
 ## How does it work?
@@ -23,11 +25,12 @@ For example:
 
 **attachBaseContext**
 
-![image](https://user-images.githubusercontent.com/41464808/162587798-6eb4cc25-c1e2-4ed6-a49d-ae11e8b4b5ba.png)
+[![](https://user-images.githubusercontent.com/41464808/162587798-6eb4cc25-c1e2-4ed6-a49d-ae11e8b4b5ba.png)](#)
 
 **onCreate**
 
-![image](https://user-images.githubusercontent.com/41464808/162587846-7e00f933-e1b1-4cef-87eb-6120d4e93120.png)
+[![](https://user-images.githubusercontent.com/41464808/162587846-7e00f933-e1b1-4cef-87eb-6120d4e93120.png)](#)
 
 7. Copy Target original APK file to `<decompile_target_app_dir>/assets/original.apk`
 8. Compile Target App and test it!
+

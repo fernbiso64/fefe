@@ -1,8 +1,10 @@
 package com.kuro.app;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.InstallSourceInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ public class MainActivity extends Activity {
     TextView apkcrc;
     TextView apkinstaller1, apkinstaller2;
 
+    @SuppressLint("SetTextI18n")
+    @Deprecated
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +44,9 @@ public class MainActivity extends Activity {
 
             String sig1 = md5(pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures[0].toByteArray());
             signature1.setText(signature1.getText() + String.valueOf(sig1));
+            //noinspection ReassignedVariable
             String sig2 = "";
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 sig2 = md5(pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo.getApkContentsSigners()[0].toByteArray());
             }
             signature2.setText(signature2.getText() + String.valueOf(sig2));
@@ -53,8 +58,9 @@ public class MainActivity extends Activity {
 
             apkinstaller1.setText(apkinstaller1.getText() + pm.getInstallerPackageName(packageName));
 
+            //noinspection ReassignedVariable
             String installer2 = "";
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 InstallSourceInfo installSourceInfo = pm.getInstallSourceInfo(packageName);
                 installer2 += installSourceInfo.getInitiatingPackageName();
                 installer2 += "|";
@@ -68,18 +74,23 @@ public class MainActivity extends Activity {
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
         }
 
         try {
             FileInputStream fis = new FileInputStream(getPackageCodePath());
 
             byte[] buffer = new byte[fis.available()];
+            //noinspection ResultOfMethodCallIgnored
             fis.read(buffer);
             fis.close();
 
             int crc = crc32(buffer);
             apkcrc.setText(apkcrc.getText() + "0x" + Integer.toHexString(crc));
         } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
     }
@@ -87,30 +98,34 @@ public class MainActivity extends Activity {
     public String md5(byte[] data) {
         final String MD5 = "MD5";
         try {
-            MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+            MessageDigest digest = MessageDigest.getInstance(MD5);
             digest.update(data);
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             StringBuilder hexString = new StringBuilder();
             for (byte aMessageDigest : messageDigest) {
-                String h = Integer.toHexString(0xFF & aMessageDigest);
+                StringBuilder h = new StringBuilder(Integer.toHexString(0xFF & aMessageDigest));
                 while (h.length() < 2)
-                    h = "0" + h;
+                    h.insert(0, "0");
                 hexString.append(h);
             }
             return hexString.toString();
 
         } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
         return "";
     }
 
     int crc32(byte[] buffer) {
+        //noinspection ReassignedVariable
         int crc = 0xffffffff;
         for (byte b : buffer) {
             crc = crc ^ b;
-            for (int i = 0; i < 8; i++) {
+            for (//noinspection ReassignedVariable
+                    int i = 0; i < 8; i++) {
                 if ((crc & 1) == 1) {
                     crc = (crc >>> 1) ^ 0xedb88320;
                 } else {

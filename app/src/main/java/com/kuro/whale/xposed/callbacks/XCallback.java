@@ -72,6 +72,7 @@ public abstract class XCallback implements Comparable<XCallback> {
         /**
          * Returns an object stored with {@link #setObjectExtra}.
          */
+        @Deprecated
         public Object getObjectExtra(String key) {
             Serializable o = getExtra().getSerializable(key);
             if (o instanceof SerializeWrapper)
