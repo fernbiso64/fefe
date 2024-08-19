@@ -2,11 +2,8 @@ name: Build
 
 on:
   push:
-    paths:
-      - '.github/workflows/build.yml'
-      - 'app/**'
-      - 'gradle/**'
-      - '*.gradle'
+    paths-ignore:
+      - 'docs/**'
   workflow_dispatch:
 
 jobs:
@@ -27,7 +24,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build with Gradle
+      - name: Build
         run: |
           ./gradlew assembleDebug
           {
@@ -40,6 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.repo }}(${{ env.version }}@${{ env.commit }})
-          path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            app/build/intermediates/cxx/Debug/*/obj/*/libkiller.so
+          path: app/build/outputs/apk/debug/app-debug.apk
