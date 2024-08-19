@@ -85,7 +85,9 @@ public final class XposedBridge {
             throw new IllegalArgumentException("Cannot hook abstract methods: " + hookMethod.toString());
         }
 
+        //noinspection ReassignedVariable
         boolean newMethod = false;
+        //noinspection ReassignedVariable
         CopyOnWriteSortedSet<XC_MethodHook> callbacks;
         synchronized (sHookedMethodCallbacks) {
             callbacks = sHookedMethodCallbacks.get(hookMethod);
@@ -221,6 +223,7 @@ public final class XposedBridge {
         param.args = args;
 
         // call "before method" callbacks
+        //noinspection ReassignedVariable
         int beforeIdx = 0;
         do {
             try {
@@ -252,6 +255,7 @@ public final class XposedBridge {
         }
 
         // call "after method" callbacks
+        //noinspection ReassignedVariable
         int afterIdx = beforeIdx - 1;
         do {
             Object lastResult = param.getResult();
@@ -333,7 +337,8 @@ public final class XposedBridge {
         }
 
         private int indexOf(final Object o) {
-            for (int i = 0; i < elements.length; ++i) {
+            for (//noinspection ReassignedVariable
+                    int i = 0; i < elements.length; ++i) {
                 if (o.equals(elements[i]))
                     return i;
             }
