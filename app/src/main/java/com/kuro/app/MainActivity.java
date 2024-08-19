@@ -81,6 +81,7 @@ public class MainActivity extends Activity {
             int crc = crc32(buffer);
             apkcrc.setText(apkcrc.getText() + "0x" + Integer.toHexString(crc));
         } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
@@ -102,6 +103,7 @@ public class MainActivity extends Activity {
             return hexString.toString();
 
         } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return "";
